@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Appointment = require('../models/appointment');
 
 router.post('/', (req, res) => {
+  console.log(req.body)
   if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
     const startTime = new Date(req.body.from);
     const endTime = new Date(req.body.to);

@@ -9,6 +9,9 @@ const dotenv = require('dotenv').config();
 
 const appointmentsRoutes = require('./routes/appointments');
 const dateRoutes = require('./routes/date');
+const startTimeRoutes = require('./routes/startTime');
+const registerRoutes = require('./routes/register');
+const loginRoutes = require('./routes/login');
 
 mongoose.connect(`mongodb+srv://Tomi:${process.env.MONGO_PASS}@bvsc-rax5n.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true})
   .then(() => {
@@ -36,6 +39,9 @@ app.use(express.json());
 // ROUTES
 app.use('/appointments', appointmentsRoutes);
 app.use('/date', dateRoutes);
+app.use('/starttime', startTimeRoutes);
+app.use('/register', registerRoutes);
+app.use('/login', loginRoutes);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

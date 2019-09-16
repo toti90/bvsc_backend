@@ -6,7 +6,8 @@ const userSchema = mongoose.Schema({
   password: {type: String, required: true},
   refreshToken: {type: String},
   resetPasswordToken: {type: String},
-  emailConfirmed: {type: Boolean}
+  emailConfirmed: {type: Boolean},
+  role: {type: String, required: true, default: 'user'}
 });
 
 module.exports = mongoose.model('User', userSchema);
