@@ -28,7 +28,6 @@ router.post('/', (req, res) => {
       email: req.body.email
     })
       .then(user => {
-        console.log(user)
         if (user) {
           return res.status(400).json({
             'message': 'Email is already in use.'
@@ -44,7 +43,7 @@ router.post('/', (req, res) => {
               });
               user.save()
                 .then(result => {
-                  res.status(200).json({message: 'succesfull registration', email: result.email})
+                  res.status(200).json({_id: result._id, email: result.email})
                 });
             }
           });
