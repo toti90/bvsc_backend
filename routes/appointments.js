@@ -70,28 +70,28 @@ router.get('/:id', (req, res) => {
 
 router.delete('/', (req, res) => {
   let id = req.query.id
-  let table = req.query.table
-  console.log(id)
-  console.log(table)
-  // if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
-  //   const id = req.params.id
-  //   console.log(id)
-  //   if (id !== undefined) {
-  //     Appointment.find({user: new ObjectId(id)}).select('_id from to bigHall table')
-  //       .then(result => 
-  //         res.status(200).json(result)
-  //       )
-  //       .catch(err => res.send(err));
-  //   } else {
-  //     res.status(400).json({
-  //       'message': `Missing id`
-  //     });
-  //   }
-  // } else {
-  //   res.status(415).json({
-  //     message: 'Bad request header settings.'
-  //   });
-  // }
+  if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
+    if (id !== undefined && req.query.table === undefined) {
+      Appointment.remove({_id: new ObjectId(id)})
+        .then(result => {
+          res.status(200).json(result.deletedCount)}
+        )
+        .catch(err => res.send(err));
+    } else if (id !== undefined && req.query.table !== undefined) {
+      let table = req.query.table.split(',')
+      Appointment.update({_id: new ObjectId(id)}, {$pull: {table: {$in: table}}})
+      .then(result => res.status(200).json(result.nModified))
+    } 
+    else {
+      res.status(400).json({
+        'message': `Missing id or tables`
+      });
+    }
+  } else {
+    res.status(415).json({
+      message: 'Bad request header settings.'
+    });
+  }
 });
 
 module.exports = router;

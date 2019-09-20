@@ -9,8 +9,6 @@ router.get('/:time', (req, res) => {
     const startTime = new Date(req.params.time);
     const finishTime = new Date(startTime);
     finishTime.setHours(startTime.getHours() + 1);
-    console.log(startTime)
-    console.log(finishTime)
     Appointment.aggregate([
       { $match: { from: new Date(startTime)} },
       { $unwind: '$table' },
