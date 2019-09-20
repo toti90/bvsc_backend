@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 var ObjectId = require('mongoose').Types.ObjectId;
 
 const Appointment = require('../models/appointment');
+const nodeMailer = require('../routes/sendEmail')
 
 router.post('/', (req, res) => {
   if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
@@ -19,6 +20,8 @@ router.post('/', (req, res) => {
           message: 'added appointment'
         }))
         .catch(err => res.send(err));
+
+        nodeMailer(appointment, req.body.email)
     } else {
       let missingProperty = [];
       if (startTime === undefined) {
@@ -47,7 +50,6 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
   if (req.headers['content-type'] && req.headers['content-type'].includes('application/json')) {
     const id = req.params.id
-    console.log(id)
     if (id !== undefined) {
       Appointment.find({user: new ObjectId(id)}).select('_id from to bigHall table')
         .then(result => 
